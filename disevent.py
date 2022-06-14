@@ -19,7 +19,7 @@ class StateMachine(object):
         def trace(f):
             def traced(self, *args, **kwargs):
                 # print("{}(*{}, **{}) START".format(f.__name__, args, kwargs))
-                if type(args[num_args - 1]) == type_args:
+                if isinstance(args[num_args - 1], type_args):
                     return f(self, *args, **kwargs)
                 else:
                     print("Wrong Input!")
@@ -119,7 +119,8 @@ class StateMachine(object):
     # @args_3
     def execute(self, *source_events, limit=100, events=None):
 
-        if events is None: events = []
+        if events is None:
+            events = []
         state = self._state_initialize()
         clock = 0
         self.state_history = [(clock, copy.copy(state))]
@@ -127,14 +128,16 @@ class StateMachine(object):
             limit -= 1
             new_events = self._source_events2events(source_events, clock)
             events.extend(new_events)
-            if len(events) == 0: break
+            if len(events) == 0:
+                break
             event, events = self._pop_next_event(events)
             state[event.var] = event.val
             clock = event.clock
             source_events = event.node.activate(state) if event.node else []
             self.state_history.append((clock, copy.copy(state)))
             self.event_history.append(event)
-        if limit == 0: print("limit reached")
+        if limit == 0:
+            print("limit reached")
         return state
 
     @args_0
@@ -154,10 +157,12 @@ class StateMachine(object):
                 if v in self.inputs:
                     res.append(' {} -> n_{};'.format(v, i))
             for j, n2 in enumerate(self.nodes):
-                if i == j: continue
+                if i == j:
+                    continue
                 for v in n.inputs:
                     if v in n2.outputs:
-                        res.append(' n_{} -> n_{}[label="{}"];'.format(j, i, v))
+                        res.append(
+                            ' n_{} -> n_{}[label="{}"];'.format(j, i, v))
             for v in n.outputs:
                 if v in self.outputs:
                     res.append(' n_{} -> {};'.format(i, v))
@@ -174,13 +179,14 @@ class Node(object):
         self.outputs = OrderedDict()
 
     def __repr__(self):
-        return "{} inputs: {} outputs: {}".format(self.name, self.inputs, self.outputs)
+        return "{} inputs: {} outputs: {}".format(
+            self.name, self.inputs, self.outputs)
 
     def arg_type(num_args, type_args):
         def trace(f):
             def traced(self, *args, **kwargs):
                 # print("{}(*{}, **{}) START".format(f.__name__, args, kwargs))
-                if type(args[num_args - 1]) == type_args:
+                if isinstance(args[num_args - 1], type_args):
                     return f(self, *args, **kwargs)
                 else:
                     print("Wrong Input!")

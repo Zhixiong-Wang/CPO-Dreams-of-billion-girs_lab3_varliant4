@@ -7,7 +7,11 @@ class StateMachineTest(unittest.TestCase):
         m = StateMachine("convert_self_state")
         m.input_port("A", latency=1)
         m.output_port("B", latency=1)
-        n = m.add_node("convert", lambda a: not a if isinstance(a, bool) else None)
+        n = m.add_node(
+            "convert",
+            lambda a: not a if isinstance(
+                a,
+                bool) else None)
         n.input("A", latency=1)
         n.output("B", latency=1)
         m.execute(
@@ -37,13 +41,17 @@ class StateMachineTest(unittest.TestCase):
         m.output_port("D2_openstop", latency=1)
 
         def add_load(a, b):
-            n = m.add_node("!{} -> {}".format(a, b), lambda a: not a if isinstance(a, bool) else None)
+            n = m.add_node("!{} -> {}".format(a, b),
+                           lambda a: not a if isinstance(a, bool) else None)
             n.input(a, latency=1)
             n.output(b, latency=1)
 
         def add_convert(a, b, c):
-            n = m.add_node("{} and {} -> {}".format(a, b, c),
-                           lambda a, b: a and b if isinstance(a, bool) and isinstance(b, bool) else None)
+            n = m.add_node(
+                "{} and {} -> {}".format(
+                    a, b, c), lambda a, b: a and b if isinstance(
+                    a, bool) and isinstance(
+                    b, bool) else None)
             n.input(a, 1)
             n.input(b, 1)
             n.output(c, 1)
@@ -56,11 +64,13 @@ class StateMachineTest(unittest.TestCase):
         add_convert("A_unoverload", "A_down", "D1_closedown")
         add_convert("A_overload", "A_up", "D2_openstop")
         add_convert("A_overload", "A_down", "D2_openstop")
-        test_data = [
-            ({'A_up': None, 'A_unoverload': False},
-             {'D2_openstop': None, 'D2_openstop': None, 'D1_closedown': None, 'D0_closeup': None}),
-
-        ]
+        test_data = [({'A_up': None,
+                       'A_unoverload': False},
+                      {'D2_openstop': None,
+                       'D2_openstop': None,
+                       'D1_closedown': None,
+                       'D0_closeup': None}),
+                     ]
         for a, d in test_data:
             source_events = [source_event(k, v, 0) for k, v in a.items()]
             actual = m.execute(*source_events)
@@ -75,10 +85,13 @@ class StateMachineTest(unittest.TestCase):
         f.close()
 
 
-
 class NodeTest(unittest.TestCase):
     def test_convert_self_state(self):
-        n = Node("convert_self_state", lambda a: not a if isinstance(a, bool) else None)
+        n = Node(
+            "convert_self_state",
+            lambda a: not a if isinstance(
+                a,
+                bool) else None)
         n.input("A", 1)
         n.output("B", 1)
         test_data = [
@@ -90,7 +103,14 @@ class NodeTest(unittest.TestCase):
             self.assertEqual(n.activate({"A": a}), [source_event("B", b, 1)])
 
     def test_add_convert(self):
-        n = Node("convert", lambda a, b: a and b if isinstance(a, bool) and isinstance(b, bool) else None)
+        n = Node(
+            "convert",
+            lambda a,
+            b: a and b if isinstance(
+                a,
+                bool) and isinstance(
+                b,
+                bool) else None)
         n.input("A", 1)
         n.input("B", 1)
         n.output("C", 1)
@@ -102,12 +122,15 @@ class NodeTest(unittest.TestCase):
             (True, True, True),
         ]
         for a, b, c in test_data:
-            self.assertEqual(n.activate({"A": a, "B": b}), [source_event("C", c, 1)])
+            self.assertEqual(n.activate({"A": a, "B": b}), [
+                             source_event("C", c, 1)])
 
     def test_convert(self):
         def convert(a):
-            if a == 0: return (0, 1)
-            if a == 1: return (1, 0)
+            if a == 0:
+                return (0, 1)
+            if a == 1:
+                return (1, 0)
             return (None, None)
 
         n = Node("convert", convert)
@@ -120,7 +143,8 @@ class NodeTest(unittest.TestCase):
             (None, None, None),
         ]
         for a, d1, d0 in test_data:
-            self.assertEqual(n.activate({"A": a}), [source_event("D1", d1, 1), source_event("D0", d0, 2)])
+            self.assertEqual(n.activate({"A": a}), [source_event(
+                "D1", d1, 1), source_event("D0", d0, 2)])
 
 
 if __name__ == '__main__':
