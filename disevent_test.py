@@ -1,6 +1,5 @@
 import unittest
 from disevent import *
-import graphviz
 
 
 class StateMachineTest(unittest.TestCase):
