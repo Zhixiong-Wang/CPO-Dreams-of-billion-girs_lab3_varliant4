@@ -40,14 +40,14 @@ class StateMachine(object):
 
         self.outputs[name] = latency
 
-    @arg_type(1, str)
+    # @arg_type(1, str)
     def add_node(self, name, function):
 
         node = Node(name, function)
         self.nodes.append(node)
         return node
 
-    @arg_type(2, int)
+    # @arg_type(2, int)
     def _source_events2events(self, source_events, clock):
         events = []
         for se in source_events:
@@ -81,7 +81,7 @@ class StateMachine(object):
 
         return trace
 
-    @args_1
+    # @args_1
     def _pop_next_event(self, events):
 
         assert len(events) > 0
@@ -99,7 +99,7 @@ class StateMachine(object):
 
         return trace
 
-    @args_0
+    # @args_0
     def _state_initialize(self):
         env = {}
         for var in self.inputs:
@@ -140,7 +140,7 @@ class StateMachine(object):
             print("limit reached")
         return state
 
-    @args_0
+    # @args_0
     def visualize(self):
 
         res = []
@@ -197,19 +197,19 @@ class Node(object):
 
         return trace
 
-    @arg_type(1, str)
+    # @arg_type(1, str)
     def input(self, name, latency=1):
 
         assert name not in self.inputs
         self.inputs[name] = latency
 
-    @arg_type(1, str)
+    # @arg_type(1, str)
     def output(self, name, latency=1):
 
         assert name not in self.outputs
         self.outputs[name] = latency
 
-    @arg_type(1, dict)
+    # @arg_type(1, dict)
     def activate(self, state):
 
         args = []
