@@ -1,8 +1,8 @@
 from collections import OrderedDict, namedtuple
 import copy
 
-event = namedtuple("Event", "clock node var val")
-source_event = namedtuple("SourceEvent", "var val latency")
+event = namedtuple("event", "clock node var val")
+source_event = namedtuple("sourceEvent", "var val latency")
 
 
 class StateMachine(object):
