@@ -1,5 +1,5 @@
 import unittest
-from src.disevent import *
+from disevent import *
 import graphviz
 
 
