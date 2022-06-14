@@ -1,6 +1,5 @@
 from collections import OrderedDict, namedtuple
 import copy
-import graphviz
 
 event = namedtuple("Event", "clock node var val")
 source_event = namedtuple("SourceEvent", "var val latency")
