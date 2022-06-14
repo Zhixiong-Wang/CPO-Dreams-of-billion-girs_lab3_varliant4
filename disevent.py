@@ -30,12 +30,12 @@ class StateMachine(object):
 
         return trace
 
-    @arg_type(1, str)
+    #@arg_type(1, str)
     def input_port(self, name, latency=1):
 
         self.inputs[name] = latency
 
-    @arg_type(1, str)
+    #@arg_type(1, str)
     def output_port(self, name, latency=1):
 
         self.outputs[name] = latency
