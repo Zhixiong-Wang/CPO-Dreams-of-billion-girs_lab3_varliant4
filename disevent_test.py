@@ -74,10 +74,6 @@ class StateMachineTest(unittest.TestCase):
         f.write(dot)
         f.close()
 
-        with open("fsm.dot") as f:
-            dot_graph = f.read()
-        dot = graphviz.Source(dot_graph)
-        dot.view()
 
 
 class NodeTest(unittest.TestCase):
