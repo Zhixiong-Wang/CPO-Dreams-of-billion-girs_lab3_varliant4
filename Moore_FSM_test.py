@@ -1,5 +1,5 @@
 import unittest
-from disevent import *
+from Moore_FSM import *
 
 
 class StateMachineTest(unittest.TestCase):
