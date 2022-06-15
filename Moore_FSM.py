@@ -15,24 +15,20 @@ class StateMachine(object):
         self.state_history = []
         self.event_history = []
 
-    # @arg_type(1, str)
     def input_port(self, name, latency=1):
 
         self.inputs[name] = latency
 
-    # @arg_type(1, str)
     def output_port(self, name, latency=1):
 
         self.outputs[name] = latency
 
-    # @arg_type(1, str)
     def add_node(self, name, function):
 
         node = Node(name, function)
         self.nodes.append(node)
         return node
 
-    # @arg_type(2, int)
     def _source_events2events(self, source_events, clock):
         events = []
         for se in source_events:
@@ -56,17 +52,6 @@ class StateMachine(object):
                     ))
         return events
 
-    def args_1(f):
-        def trace(self, *args, **kwargs):
-            if len(args) == 1:
-                return f(self, *args, **kwargs)
-            else:
-                print("Wrong Input!")
-                return 'Wrong Input!'
-
-        return trace
-
-    # @args_1
     def _pop_next_event(self, events):
 
         assert len(events) > 0
@@ -74,34 +59,12 @@ class StateMachine(object):
         event = events.pop(0)
         return event, events
 
-    def args_0(f):
-        def trace(self, *args, **kwargs):
-            if len(args) == 0:
-                return f(self, *args, **kwargs)
-            else:
-                print("Wrong Input!")
-                return 'Wrong Input!'
-
-        return trace
-
-    # @args_0
     def _state_initialize(self):
         env = {}
         for var in self.inputs:
             env[var] = None
         return env
 
-    def args_3(f):
-        def trace(self, *args, **kwargs):
-            if len(args) == 3:
-                return f(self, *args, **kwargs)
-            else:
-                print("Wrong Input!")
-                return 'Wrong Input!'
-
-        return trace
-
-    # @args_3
     def execute(self, *source_events, limit=100, events=None):
 
         if events is None:
@@ -125,7 +88,6 @@ class StateMachine(object):
             print("limit reached")
         return state
 
-    # @args_0
     def visualize(self):
 
         res = []
@@ -167,34 +129,16 @@ class Node(object):
         return "{} inputs: {} outputs: {}".format(
             self.name, self.inputs, self.outputs)
 
-    def arg_type(num_args, type_args):
-        def trace(f):
-            def traced(self, *args, **kwargs):
-                # print("{}(*{}, **{}) START".format(f.__name__, args, kwargs))
-                if isinstance(args[num_args - 1], type_args):
-                    return f(self, *args, **kwargs)
-                else:
-                    print("Wrong Input!")
-                    print(type(args[num_args - 1]))
-                    return 'Wrong Input!'
-
-            return traced
-
-        return trace
-
-    # @arg_type(1, str)
     def input(self, name, latency=1):
 
         assert name not in self.inputs
         self.inputs[name] = latency
 
-    # @arg_type(1, str)
     def output(self, name, latency=1):
 
         assert name not in self.outputs
         self.outputs[name] = latency
 
-    # @arg_type(1, dict)
     def activate(self, state):
 
         args = []
