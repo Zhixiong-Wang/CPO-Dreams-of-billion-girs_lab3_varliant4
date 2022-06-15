@@ -15,21 +15,6 @@ class StateMachine(object):
         self.state_history = []
         self.event_history = []
 
-    def arg_type(num_args, type_args):
-        def trace(f):
-            def traced(self, *args, **kwargs):
-                # print("{}(*{}, **{}) START".format(f.__name__, args, kwargs))
-                if isinstance(args[num_args - 1], type_args):
-                    return f(self, *args, **kwargs)
-                else:
-                    print("Wrong Input!")
-                    print(type(args[num_args - 1]))
-                    return 'Wrong Input!'
-
-            return traced
-
-        return trace
-
     # @arg_type(1, str)
     def input_port(self, name, latency=1):
 
