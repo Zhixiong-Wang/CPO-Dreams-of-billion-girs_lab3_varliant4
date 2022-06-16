@@ -88,6 +88,7 @@ class StateMachine(object):
             print("limit reached")
         return state
 
+
 class Node(object):
 
     def __init__(self, name, function):
