@@ -78,11 +78,6 @@ class StateMachineTest(unittest.TestCase):
             expect.update(actual)
             expect.update(d)
             self.assertEqual(actual, expect)
-        # print(m.visualize())
-        dot = m.visualize()
-        f = open('fsm.dot', 'w')
-        f.write(dot)
-        f.close()
 
 
 class NodeTest(unittest.TestCase):
