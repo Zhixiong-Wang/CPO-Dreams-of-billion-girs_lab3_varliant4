@@ -6,7 +6,7 @@ we try to implement a simple elevator finite state machine.
 
 ## Project structure
 
-- `Moore_FSM.py` -- implementation of `StateMachine` class and `Node` class with some necessary features.
+- `Moore_FSM.py` -- implementation of `StateMachine` class and `Node` class.
 
 - `Moore_FSM_test.py` -- unit and tests for `StateMachine`.
 
