@@ -5,31 +5,31 @@ from Moore_FSM import *
 class StateMachineTest(unittest.TestCase):
     def test_convert_self_state(self):
         m = StateMachine("convert_self_state")
-        m.input_port("A1", latency=1)
-        m.output_port("A2", latency=1)
+        m.input_port("A", latency=1)
+        m.output_port("B", latency=1)
         n = m.add_node(
             "convert",
             lambda a: not a if isinstance(
                 a,
                 bool) else None)
-        n.input("B1", latency=1)
-        n.output("B2", latency=1)
+        n.input("A", latency=1)
+        n.output("B", latency=1)
         m.execute(
-            source_event("A1", True, 0),
-            source_event("A1", False, 5),
+            source_event("A", True, 0),
+            source_event("A", False, 5),
         )
         self.assertEqual(m.state_history, [
-            (0, {'A1': None}),
-            (2, {'A1': True}),
-            (4, {'A1': True, 'A2': False}),
-            (7, {'A1': False, 'A2': False}),
-            (9, {'A1': False, 'A2': True}),
+            (0, {'A': None}),
+            (2, {'A': True}),
+            (4, {'A': True, 'B': False}),
+            (7, {'A': False, 'B': False}),
+            (9, {'A': False, 'B': True}),
         ])
         self.assertListEqual(m.event_history, [
-            event(clock=2, node=n, var='A1', val=True),
-            event(clock=4, node=None, var='A2', val=False),
-            event(clock=7, node=n, var='A1', val=False),
-            event(clock=9, node=None, var='A2', val=True),
+            event(clock=2, node=n, var='A', val=True),
+            event(clock=4, node=None, var='B', val=False),
+            event(clock=7, node=n, var='A', val=False),
+            event(clock=9, node=None, var='B', val=True),
         ])
 
     def test_elevator(self):
@@ -87,15 +87,15 @@ class NodeTest(unittest.TestCase):
             lambda a: not a if isinstance(
                 a,
                 bool) else None)
-        n.input("B1", 1)
-        n.output("B2", 1)
+        n.input("A", 1)
+        n.output("B", 1)
         test_data = [
             (False, True),
             (False, True),
             (None, None),
         ]
         for a, b in test_data:
-            self.assertEqual(n.activate({"B1": a}), [source_event("B2", b, 1)])
+            self.assertEqual(n.activate({"A": a}), [source_event("B", b, 1)])
 
     def test_add_convert(self):
         n = Node(
@@ -106,9 +106,9 @@ class NodeTest(unittest.TestCase):
                 bool) and isinstance(
                 b,
                 bool) else None)
-        n.input("B1", 1)
-        n.input("B2", 1)
-        n.output("B3", 1)
+        n.input("A", 1)
+        n.input("B", 1)
+        n.output("C", 1)
         test_data = [
             (None, False, None),
             (False, False, False),
@@ -117,8 +117,8 @@ class NodeTest(unittest.TestCase):
             (True, True, True),
         ]
         for a, b, c in test_data:
-            self.assertEqual(n.activate({"B1": a, "B2": b}), [
-                             source_event("B3", c, 1)])
+            self.assertEqual(n.activate({"A": a, "B": b}), [
+                             source_event("C", c, 1)])
 
     def test_convert(self):
         def convert(a):
