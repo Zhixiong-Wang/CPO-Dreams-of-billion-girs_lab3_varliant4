@@ -82,7 +82,8 @@ class StateMachine(object):
             incident, incidents = self._pop_next_event(incidents)
             state[incident.var] = incident.val
             clock = incident.clock
-            source_incidents = incident.node.activate(state) if incident.node else []
+            source_incidents = incident.node.activate(state)\
+                if incident.node else []
             self.state_history.append((clock, copy.copy(state)))
             self.event_history.append(incident)
         if limit == 0:
