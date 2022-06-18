@@ -42,7 +42,8 @@ class StateMachineTest(unittest.TestCase):
 
         def add_load(a, b):
             tuber = model.add_function("!{} -> {}".format(a, b),
-                                       lambda a: not a if isinstance(a, bool) else None)
+                                       lambda a: not a if
+                                       isinstance(a, bool) else None)
             tuber.input(a, latency=1)
             tuber.output(b, latency=1)
 
@@ -101,12 +102,8 @@ class NodeTest(unittest.TestCase):
     def test_add_convert(self):
         tuber = Node(
             "convert",
-            lambda a,
-                   b: a and b if isinstance(
-                a,
-                bool) and isinstance(
-                b,
-                bool) else None)
+            lambda a, b: a and b if
+            isinstance(a, bool) and isinstance(b, bool) else None)
         tuber.input("A", 1)
         tuber.input("B", 1)
         tuber.output("C", 1)
